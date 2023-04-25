@@ -88,7 +88,7 @@ Open your web browser and type this in the address bar:\
 	localhost:3000
 
 The default web page "index.html" will will now be opened\
-starting the transpiled file "test.js" and produce the this result:
+starting the transpiled file "test.js" and produce this result:
 
 	RPN test output:
 	4

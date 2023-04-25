@@ -20,7 +20,7 @@
 			"request": "launch",
 			"type": "msedge",
 			"url": "http://localhost:3000",
-			"webRoot": "${workspaceFolder}/examples",
+			"webRoot": "${workspaceFolder}/web",
 			"preLaunchTask": "Compile RPN"
 		},
 		{
@@ -28,7 +28,7 @@
 			"request": "launch",
 			"type": "chrome",
 			"url": "http://localhost:3000",
-			"webRoot": "${workspaceFolder}/examples",
+			"webRoot": "${workspaceFolder}/web",
 			"preLaunchTask": "Compile RPN"
 		}
 	]
