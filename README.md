@@ -61,7 +61,7 @@ Now start the HTTP server on port 3000 with one of these scripts:
 ## Running the RPN compiler
 
 With VSCode, open the project workspace file "rpn-ts.code-workspace".\
-First install de npm dependencies with this command:
+First install the npm dependencies with this command:
 
 	npm install
 
