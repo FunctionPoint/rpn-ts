@@ -5,8 +5,8 @@ import * as fs from "fs";
 
 export class Compiler
 {
-	parser: Parser = new Parser( '' );
-	sourceFilename = '';
+	parser!: Parser;
+	sourceFilename!: string;
 
 	static rpnExtension = ".rpn";
 	static operatorMap = new Map( [
@@ -32,9 +32,12 @@ export class Compiler
 		this.sourceFilename = sourceFilename;
 		let mapFilename = codeFilename + ".map";
 
-		let input = fs.readFileSync( sourceFilename ).toString();
+		console.log( 'RPN-TS: Compiling "' + sourceFilename +
+			'" to "' + codeFilename + '" and "' + mapFilename + '"' );
 
-		let rootNode = this.compileSource( input );
+		let source = fs.readFileSync( sourceFilename ).toString();
+
+		let rootNode = this.compileSource( source );
 
 		// codeWithSourceMap interface: { code: String, map: SourceMapGenerator }
 		let codeWithSourceMap = rootNode.toStringWithSourceMap( { file: mapFilename } );
