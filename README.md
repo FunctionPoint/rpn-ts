@@ -2,11 +2,11 @@
 
 RPN-TS stands for Reverse Polish Notation in TypeScript.\
 The purpose of this project is to show how to generate source maps\
-for your own scripting language that transpiles (compiles) to JavaScript (JS).
+for your own scripting language that compiles (transpiles) to JavaScript (JS).
 
-RPN-TS transpiles source code of the 'toy language' RPN to JS,\
+RPN-TS compiles source code of the 'toy language' RPN to JS,\
 while also generating source map files (*.map).\
-After this transpilation, you can start a JS output file in a browser in debug mode\
+After this compilation, you can start a JS output file in a browser in debug mode\
 and step through RPN source line by line, while JS is executing underneath.
 
 The RPN compiler and parser are hand-implemented in TypeScript.\
@@ -53,53 +53,51 @@ To install it globally run this on a command line:
 
 	npm install --global http-server
 
-Now start the HTTP server on port 3000 with one of these scripts:
+Now start the HTTP server on port 3000 this script:
+(On Windows, use Git Bash to open it)
 
-	startWebServer   		(Linux, Mac)
-	startWebServer.cmd		(Windows)
+	startWebServer.sh
 
-## Running the RPN compiler
+## Installing dependencies
 
 With VSCode, open the project workspace file "rpn-ts.code-workspace".\
 First install the npm dependencies with this command:
 
 	npm install
 
-Open the file "web/test.rpn" to see the RPN source code that will be transpiled to JS.\
+## Running the RPN compiler
+
+In VSCode, open the file "web/rpn/test.rpn" to see the RPN source code that will be transpiled to JS.\
 For information on how Reverse Polish Notation works, look here: \
 https://en.wikipedia.org/wiki/Reverse_Polish_notation
 
+
 Now click the VSCode menu "Run" > "Start debugging".\
-Open the generated file "web/test.js" to see the transpiled JS code.\
-This code first imports the file "Rpn.js" that implements the RPN "virtual machine".
-
-Also notice that the file "web/test.js.map" was generated.\
-This file contains a mapping between the RPN source code and the transpiled JS code.\
-You can examine the file "src/Compiler.ts" to see how generation of the map file works.
-
-More information on the source map file format can be found here:\
-https://sourcemaps.info/spec.html
-
-## Running the code in a web browser
-
-Open your web browser and type this in the address bar:\
-(Remember we started the HTTP server on port 3000)
-
-	localhost:3000
-
-The default web page "index.html" will will now be opened\
-starting the transpiled file "test.js" and produce this result:
+Now the `web/rpn/test.rpn` source code will be compiled to `test.js` with source map `test.js.map` in the same folder.\
+The default browser will be opened starting the transpiled file `test.js` and produce this result:
 
 	RPN test output:
 	4
 
 Jay!
 
+# Inspecting compiled RPN code
+
+Open the generated file "web/rpn/test.js" to see the compiled JS code.\
+The script first imports the file "../rpn-vm.js" that implements the RPN "virtual machine".
+
+Also notice that the file "web/rpn/test.js.map" was generated.\
+This file contains a mapping between the RPN source code and the transpiled JS code.\
+You can examine the file "src/Compiler.ts" to see how generation of the map file works.
+
+More information on the source map file format can be found here:\
+https://sourcemaps.info/spec.html
+
 ## Debugging RPN code in a web browser
 
 Now the final step, this is what it's all about.\
 Open the development tools in your browser by pressing the [F12] key.\
-Under the "Sources" menu, you should be able to open the file "test.rpn":
+Under the "Sources" menu, you should be able to open the file "rpn/test.rpn":
 
 	a 8 =
 	b 3 =

@@ -19,7 +19,7 @@
 			"label": "Compile RPN",
 			"type": "shell",
 			"command": "node",
-			"args": [  "../out/app.js", "test.rpn" ],
+			"args": [  "../out/app.js", "rpn/test.rpn" ],
 			"options": {
 				"cwd": "${workspaceFolder}/web"
 			},

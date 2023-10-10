@@ -17,28 +17,33 @@ export class Compiler
 		[ "print", "print" ]
 	] );
 
-	compileFiles( sourceFilenames: string[] )
+	compileFiles( sourcePaths: string[] )
 	{
-		for( let sourceFilename of sourceFilenames )
-			this.compileFile( sourceFilename );
+		for( let sourcePath of sourcePaths )
+			this.compileFile( sourcePath );
 	}
 
-	compileFile( sourceFilename: string )
+	compileFile( sourcePath: string )
 	{
+		let baseIndex = sourcePath.lastIndexOf( '/' );
+		let sourceFolder = baseIndex < 0 ? './' : sourcePath.substring( 0, baseIndex + 1 );
+
+		let sourceFilename = sourcePath.substring( baseIndex + 1 );
+		this.sourceFilename = sourceFilename;
+
 		let codeFilename =
 			sourceFilename.toLowerCase().endsWith( Compiler.rpnExtension ) ?
 			sourceFilename.slice( 0, - Compiler.rpnExtension.length ) + ".js" :
 			sourceFilename;
-		this.sourceFilename = sourceFilename;
+		let codePath = sourceFolder + codeFilename;
+
 		let mapFilename = codeFilename + ".map";
+		let mapPath = sourceFolder + mapFilename;
 
-		console.log( 'RPN-TS: Compiling "' + sourceFilename +
-			'" to "' + codeFilename + '" and "' + mapFilename + '"' );
+		console.log( 'RPN-TS: Compiling: "' + sourcePath +'" to: "' + codePath + '" and: "' + mapPath + '"' );
 
-		let source = fs.readFileSync( sourceFilename ).toString();
-
+		let source = fs.readFileSync( sourcePath ).toString();
 		let rootNode = this.compileSource( source );
-
 		// codeWithSourceMap interface: { code: String, map: SourceMapGenerator }
 		let codeWithSourceMap = rootNode.toStringWithSourceMap( { file: mapFilename } );
 
@@ -46,8 +51,8 @@ export class Compiler
 		// so that the browser’s debugger knows where to find the source map.
 		codeWithSourceMap.code += "\n//# sourceMappingURL=" + mapFilename + "\n";
 
-		fs.writeFileSync( codeFilename, codeWithSourceMap.code );
-		fs.writeFileSync( mapFilename, codeWithSourceMap.map.toString() );
+		fs.writeFileSync( codePath, codeWithSourceMap.code );
+		fs.writeFileSync( mapPath, codeWithSourceMap.map.toString() );
 	}
 
 	compileSource( source: string ): SourceNode
@@ -66,7 +71,7 @@ export class Compiler
 	compileImport(): SourceNode
 	{
 		return new SourceNode( null, null, null, "" )
-			.add( "import { Rpn } from './Rpn.js';\n" )
+			.add( "import { Rpn } from '../rpn-vm.js';\n" )
 			.add( "let rpn = new Rpn();\n" );
 	}
 
