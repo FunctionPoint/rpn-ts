@@ -115,6 +115,6 @@ Pretty cool, no?
 
 # Conclusion
 
-I hope this project helped you to better understand JS sources maps,\
+I hope this project helped you to better understand JS source maps,\
 so you can implement them for your own JS transpiled scripting language.\
-Feedback for improvements are welcome.
+Feedback for improvements is welcome.
