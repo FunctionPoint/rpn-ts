@@ -15,6 +15,14 @@ export class Rpn
 		return this.stack.pop();
 	};
 
+	top()
+	{
+		if ( this.stack.length <= 0 )
+			throw new Error( "Can't get top from empty stack" );
+
+		return this.stack[ this.stack.length - 1 ];
+	};
+
 	add()
 	{
 		this.push( this.pop() + this.pop() );
@@ -39,24 +47,18 @@ export class Rpn
 		this.push( this.pop() / right );
 	}
 
-	// Example: "7 2 print" means print number 7 two times.
+	// Print outputs value on top of stack in de div and leaves it there.
 
 	print()
 	{
-		let repeat = this.pop();
-		if( repeat <= 0 )
-			throw new Error( 'Repeat argument must be greater than 0' );
-
-		let value = this.pop();
+		let value = this.top();
 		if( Math.floor( value ) != value )
 			throw new Error( 'Value argument must be an integer' );
 
-		while ( repeat-- > 0 ) {
-			var element = document.createElement( 'div' );
-			var text = document.createTextNode( value.toString() );
-			element.appendChild( text );
-			document.body.appendChild( element );
-		}
+		var element = document.createElement( 'div' );
+		var text = document.createTextNode( value.toString() );
+		element.appendChild( text );
+		document.body.appendChild( element );
 	}
 }
 

@@ -13,8 +13,7 @@ export class Compiler
 		[ "+", "add" ],
 		[ "-", "subtract" ],
 		[ "*", "multiply" ],
-		[ "/", "divide" ],
-		[ "print", "print" ]
+		[ "/", "divide" ]
 	] );
 
 	compileFiles( sourcePaths: string[] )
@@ -82,7 +81,12 @@ export class Compiler
 	compileExpression(): SourceNode
 	{
 		let left = this.compileValue();
-		if( !this.isValue( this.parser.peekTerm() ) )
+		let term = this.parser.peekTerm();
+
+		if( term == "print" )
+			return this.compilePrint( left );
+
+		if( !this.isValue( term ) )
 			return left;
 
 		let right = this.compileExpression();
@@ -97,6 +101,18 @@ export class Compiler
 			this.error( "Expected value, got: " + value );
 
 		return this.compilePush( value );
+	}
+
+	// Print is a single argument operator
+
+	compilePrint( left: SourceNode ): SourceNode
+	{
+		let operator = this.parser.nextTerm();
+		if( operator != "print" )
+			this.error( "Print expected, got: " + operator );
+
+		let source = "rpn.print();\n";
+		return this.sourceNode( "", operator ).add( left ).add( source );
 	}
 
 	compileOperator( left: SourceNode, right: SourceNode ): SourceNode
@@ -137,11 +153,14 @@ export class Compiler
 
 	isValue( value: string ): boolean
 	{
-		return ( this.isNumber( value ) || this.isVariable( value ) ) && value != 'print' ;
+		return this.isNumber( value ) || this.isVariable( value );
 	}
 
 	isVariable( value: string ): boolean
 	{
+		if( value == 'print' )
+			return false;
+
 		let code = value.charCodeAt( 0 );
 		return ( code >= 65 && code <= 90 ) || ( code >= 97 && code <= 122 );
 	}
